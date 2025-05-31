@@ -1,0 +1,44 @@
+{
+  "extends": "expo/tsconfig.base",
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext",                                 
+    "lib": ["es2017", "dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "jsx": "react-native",
+    "noEmit": true,
+    "isolatedModules": true,
+    "strict": true,
+    "moduleResolution": "bundler",                      
+    "customConditions": ["react-native"],
+    "baseUrl": "./",
+    "paths": {
+      "*": ["src/*"]
+    },
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "types": [
+      "jest",
+      "@types/jest",
+      "@testing-library/react-native"
+    ]
+  },
+  "exclude": [
+    "node_modules",
+    "babel.config.js",
+    "metro.config.js"
+  ],
+  "include": [
+    "src/**/*",
+    "App.tsx",
+    "__tests__/**/*",
+    "src/types/*.d.ts",
+    "src/types/**/*.d.ts"
+  ],
+  "typeRoots": [
+    "./node_modules/@types",
+    "./src/types"
+  ]
+}

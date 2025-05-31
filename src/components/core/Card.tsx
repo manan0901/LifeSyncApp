@@ -1,0 +1,143 @@
+// src/components/core/Card.tsx
+import React from 'react';
+import { StyleSheet, View, Text, TouchableOpacity, ViewStyle } from 'react-native';
+import { useTheme } from '../../themes/ThemeContext';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+
+interface CardProps {
+  title?: string;
+  subtitle?: string;
+  content?: React.ReactNode;
+  footer?: React.ReactNode;
+  icon?: string;
+  iconColor?: string;
+  onPress?: () => void;
+  style?: ViewStyle;
+  elevated?: boolean;
+  bordered?: boolean;
+  children?: React.ReactNode;
+}
+
+const Card: React.FC<CardProps> = ({
+  title,
+  subtitle,
+  content,
+  footer,
+  icon,
+  iconColor,
+  onPress,
+  style,
+  elevated = false,
+  bordered = true,
+  children
+}) => {
+  const { theme } = useTheme();
+  // Determine card style based on props
+  const cardStyle = {
+    backgroundColor: theme.colors.surface,
+    borderColor: bordered ? theme.colors.border : 'transparent',
+    borderWidth: bordered ? 1 : 0,
+    shadowColor: elevated ? '#000' : 'transparent',
+    shadowOpacity: 0.1,
+    shadowOffset: { width: 0, height: 3 },
+    shadowRadius: 5,
+    elevation: elevated ? 3 : 0,
+  };
+
+  const renderCardContent = () => (
+    <>
+      {/* Card Header */}
+      {(title || subtitle || icon) && (
+        <View style={styles.header}>
+          {icon && (
+            <View style={styles.iconContainer}>
+              <MaterialCommunityIcons
+                name={icon as any}
+                size={24}
+                color={iconColor || theme.colors.primary}
+              />
+            </View>
+          )}
+          <View style={styles.headerTextContainer}>
+            {title && (
+              <Text style={[styles.title, { color: theme.colors.text }]}>
+                {title}
+              </Text>
+            )}
+            {subtitle && (              <Text style={[styles.subtitle, { color: theme.colors.secondary }]}>
+                {subtitle}
+              </Text>
+            )}
+          </View>
+        </View>
+      )}
+
+      {/* Card Content */}
+      {content && <View style={styles.content}>{content}</View>}
+      {children && <View style={styles.content}>{children}</View>}
+
+      {/* Card Footer */}      {footer && (
+        <View style={[styles.footer, { borderTopColor: theme.colors.border }]}>
+          {footer}
+        </View>
+      )}
+    </>
+  );
+
+  // Return the card with or without touch functionality
+  if (onPress) {
+    return (
+      <TouchableOpacity
+        style={[styles.card, cardStyle, style]}
+        onPress={onPress}
+        activeOpacity={0.8}
+      >
+        {renderCardContent()}
+      </TouchableOpacity>
+    );
+  }
+
+  return (
+    <View style={[styles.card, cardStyle, style]}>
+      {renderCardContent()}
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  card: {
+    borderRadius: 12,
+    overflow: 'hidden',
+    marginVertical: 8,
+  },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 16,
+    paddingHorizontal: 16,
+  },
+  iconContainer: {
+    marginRight: 12,
+  },
+  headerTextContainer: {
+    flex: 1,
+  },
+  title: {
+    fontSize: 18,
+    fontWeight: '600',
+    marginBottom: 4,
+  },
+  subtitle: {
+    fontSize: 14,
+  },
+  content: {
+    paddingHorizontal: 16,
+    paddingBottom: 16,
+  },
+  footer: {
+    padding: 12,
+    borderTopWidth: 1,
+  },
+});
+
+export default Card;
