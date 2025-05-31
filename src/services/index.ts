@@ -8,6 +8,7 @@ export * from './mindfulness.service';
 export * from './recommendation.service';
 export * from './storage.service';
 export * from './notification.service';
+export * from './supabase.service';
 
 // Export types
 export * from './api.types';
